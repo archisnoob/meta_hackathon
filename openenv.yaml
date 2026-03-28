@@ -1,0 +1,63 @@
+name: PackCompliance-Env
+version: "1.0.0"
+description: >
+  Pre-distribution batch compliance environment for packaged food products.
+  Agent inspects ingredient data across FSSAI/FDA/EU frameworks using
+  risk-adaptive sampling and makes binding batch disposition decisions.
+author: archi
+license: MIT
+tags:
+  - food-safety
+  - batch-compliance
+  - regulatory
+  - ingredient-inspection
+  - supply-chain
+
+tasks:
+  - id: task_easy
+    name: "Single snack batch — label compliance"
+    difficulty: easy
+    max_steps: 8
+    min_score: 0.0
+    max_score: 1.0
+
+  - id: task_medium
+    name: "Baby food batch — formulation and arithmetic audit"
+    difficulty: medium
+    max_steps: 12
+    min_score: 0.0
+    max_score: 1.0
+
+  - id: task_hard
+    name: "Supplement crisis — mislabeling and cross-jurisdiction"
+    difficulty: hard
+    max_steps: 15
+    min_score: 0.0
+    max_score: 1.0
+
+endpoints:
+  reset:    POST /api/reset
+  step:     POST /api/step
+  state:    GET  /api/state
+  tasks:    GET  /api/tasks
+  grader:   POST /api/grader
+  baseline: POST /api/baseline
+  validate: GET  /api/validate
+  health:   GET  /api/health
+
+observation_space:
+  type: structured
+  format: json
+  schema: src/types/index.ts::Observation
+
+action_space:
+  type: structured
+  format: json
+  schema: src/types/index.ts::Action
+
+reward:
+  type: float
+  range: [0.0, 1.0]
+  shaped: true
+  sparse: false
+  asymmetric_penalties: true
